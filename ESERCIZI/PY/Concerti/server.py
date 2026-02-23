@@ -1,79 +1,78 @@
 import socket
 import threading
 
-# Dizionario concerti
 concerti = {
-    "Vasco Rossi": {"data": "10/07/2026", "prezzo": 50, "posti": 5},
-    "Ultimo": {"data": "15/07/2026", "prezzo": 40, "posti": 8},
-    "Måneskin": {"data": "20/07/2026", "prezzo": 45, "posti": 6}
+    "Travis Scott": {"data": "10/10/2026", "prezzo": 50, "posti": 4},
+    "Drake": {"data": "23/04/2027", "prezzo": 30, "posti": 5},
+    "IDK": {"data": "17/03/2026", "prezzo": 20, "posti": 2}
 }
 
 def gestione_client(conn, addr):
     print("Connessione da", addr)
 
-    # Invio lista concerti al client
-    lista_concerti = ""
-    for nome in concerti:
-        lista_concerti += nome + ","
+    lista_concerti = ",".join(concerti.keys())
     conn.sendall(lista_concerti.encode())
 
-    try:
-        data = conn.recv(1024).decode()
-        nome, numero = data.split(",")
-
+    while True:
         try:
-            numero = int(numero)
+            data = conn.recv(1024).decode()
 
-            if numero <= 0:
-                risposta = "Errore: numero di biglietti non valido"
+            if not data:
+                break
 
-            elif numero > concerti[nome]["posti"]:
-                risposta = "Errore: posti insufficienti"
+            nome, numero = data.split(",")
 
-            else:
-                prezzo = concerti[nome]["prezzo"]
-                totale = prezzo * numero
-                sconto = 0
+            try:
+                numero = int(numero)
 
-                # Sconto 10% per 3 o più biglietti
-                if numero >= 3:
-                    sconto = totale * 0.10
+                if numero <= 0:
+                    risposta = "Errore: numero non valido"
 
-                finale = totale - sconto
+                elif numero > concerti[nome]["posti"]:
+                    risposta = "Errore: posti insufficienti"
 
-                risposta = (
-                    f"Concerto: {nome}\n"
-                    f"Data: {concerti[nome]['data']}\n"
-                    f"Totale: {totale}€\n"
-                    f"Sconto: {sconto}€\n"
-                    f"Da pagare: {finale}€"
-                )
+                else:
+                    prezzo = concerti[nome]["prezzo"]
+                    totale = prezzo * numero
+                    sconto = 0
 
-                # Aggiorno posti disponibili
-                concerti[nome]["posti"] -= numero
+                    if numero >= 3:
+                        sconto = totale * 0.10
+
+                    finale = totale - sconto
+
+                    risposta = (
+                        f"Concerto: {nome}\n"
+                        f"Data: {concerti[nome]['data']}\n"
+                        f"Totale: {totale}€\n"
+                        f"Sconto: {sconto}€\n"
+                        f"Da pagare: {finale}€"
+                    )
+
+                    concerti[nome]["posti"] -= numero
+
+            except:
+                risposta = "Errore: inserisci numero valido"
+
+            conn.sendall(risposta.encode())
 
         except:
-            risposta = "Errore: inserisci un numero valido"
+            break
 
-        conn.sendall(risposta.encode())
-
-    except:
-        print("Errore comunicazione")
-
+    print("Client disconnesso", addr)
     conn.close()
 
 
 def start_server():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind(("127.0.0.1", 12345))
+    server_socket.bind(('localhost', 12345))
     server_socket.listen(5)
-    print("Server concerti avviato...")
+    print("Server in ascolto...")
 
     while True:
         conn, addr = server_socket.accept()
-        thread = threading.Thread(target=gestione_client, args=(conn, addr))
-        thread.start()
-
+        client_thread = threading.Thread(target = gestione_client, args = (conn, addr))
+        client_thread.start()
 
 if __name__ == "__main__":
-    start_server()
+    start_server()    
