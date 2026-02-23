@@ -8,7 +8,6 @@ concerti = {
 }
 
 
-
 def gestione_client(conn, addr):
     print(f"connessione con {addr}.")
 
@@ -66,7 +65,6 @@ def gestione_client(conn, addr):
     conn.close()
 
 
-
 def start_server():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind(('localhost', 12345))
@@ -80,3 +78,4 @@ def start_server():
 
 if __name__ == "__main__":
     start_server()
+    
