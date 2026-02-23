@@ -1,41 +1,38 @@
 import socket
 import threading
 
-
 concerti = {
-    "Travis Scott": {"data": "18/02/2027", "prezzo": 40,"posti": 8},
-    "Drake": {"data": "30/04/2026", "prezzo": 60,"posti": 5},
-    "IDK": {"data": "12/10/2026", "prezzo": 30,"posti": 12}
+    "Travis Scott": {"data": "12/02/2027", "prezzo": 90, "posti": 9},
+    "Drake": {"data": "24/07/2026", "prezzo": 70, "posti": 7},
+    "Sfera": {"data": "11/08/2026", "prezzo": 40, "posti": 3}
 }
 
 
+
 def gestione_client(conn, addr):
-    print(f"Connessione in corso con {addr}.")
+    print(f"connessione con {addr}.")
 
     lista_concerti = ",".join(concerti.keys())
     conn.sendall(lista_concerti.encode())
 
-
     while True:
-
 
         try:
             data = conn.recv(1024).decode()
 
             if not data:
                 break
-            
-            nome, numero = data.split(",")
 
+            nome, numero = data.split(",")
 
             try:
                 numero = int(numero)
-                
+
                 if numero <= 0:
                     risposta = "Numero biglietti non valido."
 
                 elif numero > concerti[nome]["posti"]:
-                    risposta = "Disponibilità biglietti insufficiente."
+                    risposta = "Numero biglietti insufficiente"
 
                 else:
                     prezzo = concerti[nome]["prezzo"]
@@ -44,30 +41,28 @@ def gestione_client(conn, addr):
 
                     if numero >= 3:
                         sconto = totale * 0.10
-                    
+
                     finale = totale - sconto
 
                     risposta = (
                         f"Concerto: {nome}\n"
                         f"Data: {concerti[nome]['data']}\n"
-                        f"Totale: {totale}\n"
+                        f"Prezzo: {prezzo}\n"
                         f"Sconto: {sconto}\n"
                         f"Da pagare: {finale}\n"
                     )
 
                     concerti[nome]["posti"] -= numero
 
-
             except:
-                risposta = "Errore inserimento dati."
+                risposta = "Inserimento client errato."
 
             conn.sendall(risposta.encode())
-
 
         except:
             break
 
-    print(f"Disconnessione in corso con {addr}.")
+    print(f"Chiusura connessione con {addr}")
     conn.close()
 
 
@@ -77,7 +72,6 @@ def start_server():
     server_socket.bind(('localhost', 12345))
     server_socket.listen(5)
     print("Server in ascolto...")
-
 
     while True:
         conn, addr = server_socket.accept()

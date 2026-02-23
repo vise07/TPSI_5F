@@ -28,11 +28,9 @@ def acquista():
 
     entry_biglietti.delete(0, tk.END)
 
-# Connessione al server
 client = connetti_server()
 concerti_disponibili = ricevi_concerti(client)
 
-# GUI
 root = tk.Tk()
 root.title("Vendita Biglietti Concerti")
 
