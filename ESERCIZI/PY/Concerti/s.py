@@ -1,6 +1,7 @@
 import socket
 import threading
 
+
 concerti = {
     "Travis Scott": {"data": "12/02/2027", "prezzo": 90, "posti": 9},
     "Drake": {"data": "24/07/2026", "prezzo": 70, "posti": 7},
