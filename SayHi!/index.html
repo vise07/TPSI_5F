@@ -1,0 +1,115 @@
+<!-- @Authors: Marchetto Francesco, Visentini Nicolò, Gianesella riccardo -->
+<!-- @Project: C -> SayHi! -->
+<!-- @class: 5F 2025/2026 -->
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SayHi! - Chatbot Intelligente</title>
+    <!-- Collegamento al foglio di stile CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- FontAwesome per le icone (libreria esterna per icone moderne) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="chat-container">
+            
+            <!-- ========================================== -->
+            <!-- HEADER: intestazione della chat            -->
+            <!-- ========================================== -->
+            <div class="chat-header">
+                <div class="header-content">
+                    <!-- Avatar del bot (immagine esterna) -->
+                    <div class="avatar-container">
+                        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" alt="AI Avatar" class="avatar" id="botAvatar">
+                    </div>
+                    <!-- Testo del header -->
+                    <div class="header-text">
+                        <h1>SayHi! Chatbot</h1>
+                        <p>Il tuo assistente per la programmazione e l'AI</p>
+                    </div>
+                </div>
+                <!-- Indicatore di stato (online/offline) -->
+                <div class="status">
+                    <i class="fas fa-circle" id="statusDot"></i>
+                    <span id="statusText">Online</span>
+                    <div class="model-badge">
+                        <i class="fas fa-brain"></i> AI Ready
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- AREA MESSAGGI: dove compaiono i messaggi   -->
+            <!-- ========================================== -->
+            <div class="chat-messages" id="chatMessages">
+                <!-- Messaggio di benvenuto iniziale (primo messaggio del bot) -->
+                <div class="message bot-message">
+                    <div class="message-content">
+                        <!-- Avatar piccolo del bot accanto al messaggio -->
+                        <div class="avatar-small">
+                            <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" alt="Bot">
+                        </div>
+                        <div class="message-bubble">
+                            <div class="message-text">
+                                👋 Ciao! Sono SayHi, il tuo assistente intelligente!<br><br>
+                                <strong>Posso aiutarti con:</strong><br>
+                                💻 Programmazione (JavaScript, Python, Java)<br>
+                                🧠 Intelligenza Artificiale (Machine Learning, ChatGPT)<br>
+                                🌐 Sviluppo Web (HTML, CSS, React)<br>
+                                📈 Carriera tech (stipendi, linguaggi richiesti)<br><br>
+                                <strong>📝 Prova a scrivere:</strong><br>
+                                • "Cos'è JavaScript?"<br>
+                                • "Differenza tra Java e JavaScript"<br>
+                                • "Quanto guadagna un programmatore?"<br>
+                                • "Spiegami una variabile come a un bambino"<br>
+                                • "aiuto" per vedere tutti i comandi<br><br>
+                                <em>Scrivi la tua domanda qui sotto ⬇️</em>
+                            </div>
+                            <!-- Timestamp del messaggio -->
+                            <div class="message-time">ora</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- AREA INPUT: dove l'utente scrive           -->
+            <!-- ========================================== -->
+            <div class="chat-input-container">
+                <!-- Campo di testo e pulsante di invio -->
+                <div class="input-wrapper">
+                    <textarea id="userInput" placeholder="Scrivi la tua domanda..." rows="1"></textarea>
+                    <button id="sendBtn" class="send-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                
+                <!-- Categorie rapide per filtrare i suggerimenti -->
+                <div class="quick-categories">
+                    <button class="cat-btn" data-category="programmazione">💻 Programmazione</button>
+                    <button class="cat-btn" data-category="ai">🧠 AI</button>
+                    <button class="cat-btn" data-category="web">🌐 Web</button>
+                    <button class="cat-btn" data-category="carriera">📈 Carriera</button>
+                    <button class="cat-btn" data-category="random">🎲 Casuale</button>
+                </div>
+                
+                <!-- Contenitore per i suggerimenti dinamici (verrà popolato da JavaScript) -->
+                <div class="suggestions-container" id="suggestionsContainer"></div>
+                
+                <!-- Barra delle statistiche: conta le domande fatte -->
+                <div class="stats-bar">
+                    <span><i class="far fa-comment-dots"></i> <span id="messageCount">0</span> domande fatte</span>
+                    <span><i class="far fa-smile"></i> Sempre felice di aiutarti!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Collegamento allo script JavaScript principale -->
+    <script src="index.js"></script>
+</body>
+</html>
